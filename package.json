@@ -1,0 +1,27 @@
+{
+  "name": "yoku",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "canvacard": "^5.2.8",
+    "canvacord": "^6.0.2",
+    "canvafy": "^7.1.0",
+    "canvas": "^2.11.2",
+    "discord-card-canvas": "^1.4.4",
+    "discord.js": "^14.15.3",
+    "dotenv": "^16.4.5",
+    "moment": "^2.30.1",
+    "mongoose": "^8.5.3",
+    "nodemon": "^3.1.4",
+    "rankcard": "^1.2.3",
+    "sequelize": "^6.37.3",
+    "sqlite3": "^5.1.7"
+  },
+  "description": ""
+}
