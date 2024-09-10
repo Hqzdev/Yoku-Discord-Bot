@@ -1,8 +1,6 @@
 {
-	"token": "ur token here",
 	"clientId": "owner id",
 	"guildId": "server id",
-	"mongoDB": "mondo db here",
 	"devs": ["devs id"]
 
 }
