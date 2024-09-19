@@ -23,6 +23,15 @@ module.exports = async (client, interaction) => {
       }
     }
 
+    if (commandObject.disabled) {
+        interaction.reply({
+          content: 'Disabled command',
+          ephemeral: true,
+        });
+        return;
+    }
+
+
     if (commandObject.testOnly) {
       if (!(interaction.guild.id === testServer)) {
         interaction.reply({
