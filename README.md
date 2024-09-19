@@ -5,3 +5,9 @@ economy 75% done
 music system isn't work 
 settings 50% done
 ##  the bot is a beta, half-made, not recommended for use (added for personal progress tracking)
+
+
+Bot V1.2
+added economy,giveaway,level system
+added admin commands and moderation
+fix bugs
