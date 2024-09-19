@@ -3,9 +3,8 @@ const {
   Interaction,
   ApplicationCommandOptionType,
   AttachmentBuilder,
-  EmbedBuilder,
 } = require('discord.js');
-const canvafy = require('canvafy');
+const canvacord = require("canvacord");
 const calculateLevelXp = require('../../utils/calculateLevelXp');
 const Level = require('../../models/Level');
 
@@ -55,42 +54,42 @@ module.exports = {
 
     let currentRank = allLevels.findIndex((lvl) => lvl.userId === targetUserId) + 1;
 
-    // Create a Canvafy object
-    const canva = new canvafy();
-
-    // Set the rank card data
-    canva.setData({
-      avatar: targetUserObj.user.displayAvatarURL({ size: 256 }),
+    const img = targetUserObj.user.displayAvatarURL({ format: 'png', size: 256 });
+    const background = "https://i.imgur.com/5O7xmVe.png";
+    
+    // Данные для отображения уровня
+    const userData = {
+      xp: fetchedLevel.xp,
+      requiredXP: calculateLevelXp(fetchedLevel.level),
       rank: currentRank,
       level: fetchedLevel.level,
-      currentXp: fetchedLevel.xp,
-      requiredXp: calculateLevelXp(fetchedLevel.level),
-      status: targetUserObj.presence?.status || 'offline',
-      username: targetUserObj.user.username,
-      discriminator: targetUserObj.user.discriminator,
+    };
+
+    const rank = new canvacord.Rank()
+      .setAvatar(img)
+      .setBackground('IMAGE', background)
+      .setCurrentXP(userData.xp)
+      .setRequiredXP(userData.requiredXP)
+      .setRank(userData.rank)
+      .setRankColor("#FFFFFF")
+      .setLevel(userData.level)
+      .setLevelColor("#FFFFFF")
+      .setStatus("online", true)
+      .setCustomStatusColor("#23272A")
+      .setOverlay("#23272A", 0, true)
+      .setProgressBar(["#FF0000", "#0000FF"], "GRADIENT")
+      .setProgressBarTrack("#000000")
+      .setUsername(targetUserObj.user.username)
+      .setDiscriminator(targetUserObj.user.discriminator)
+      .renderEmojis(true);
+
+    rank.build().then(data => {
+      const attachment = new AttachmentBuilder(data, { name: 'RankCard.png' });
+      interaction.editReply({ files: [attachment] });
+    }).catch(err => {
+      console.error(err);
+      interaction.editReply('There was an error generating the rank card.');
     });
-
-    // Define a custom template for the rank card
-    canva.setTemplate(`
-      <div style="background-color: #2f3136; border-radius: 10px; padding: 20px; width: 700px;">
-        <div style="display: flex; align-items: center;">
-          <img src="{{avatar}}" style="width: 100px; height: 100px; border-radius: 50%;" />
-          <div style="margin-left: 20px;">
-            <h2 style="color: #ffffff; font-size: 30px;">Level: {{level}}</h2>
-            <div style="background-color: #228B22; height: 20px; width: {{currentXp}}px; border-radius: 5px;"></div>
-            <h3 style="color: #ffffff; font-size: 25px;">Rank: {{rank}}</h3>
-            <h3 style="color: #ffffff; font-size: 25px;">{{username}}#{{discriminator}}</h3>
-          </div>
-        </div>
-      </div>
-    `);
-
-    // Render the rank card to a buffer
-    const buffer = await canva.render();
-
-    // Create an attachment and send it
-    const attachment = new AttachmentBuilder(buffer, { name: 'rank.png' });
-    interaction.editReply({ files: [attachment] });
   },
 
   name: 'level',
