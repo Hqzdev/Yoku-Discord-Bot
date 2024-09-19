@@ -9,10 +9,15 @@ guildId: {
     type: String,
     required: true,
 },
-balance: {
+default: {
     type: Number,
     default: 150,
 },
+premium: {
+    type: Number,
+    default: 1,
+},
+
 lastDaily: {
     type: Date,
     required: true,
